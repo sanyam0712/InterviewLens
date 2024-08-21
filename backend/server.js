@@ -12,7 +12,7 @@ connectDB();
 
 app.get("/",(req,res)=>{
     console.log("hello");
-    
+    res.send("hello it is working");
 })
 
 app.listen(port,()=>{
