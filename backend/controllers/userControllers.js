@@ -11,8 +11,6 @@ const login = async(req, res)=>{
         if(!user){
             res.status(400).json({success:false, message:"user not found please check your email"});
         }
-        console.log('Request body:', req.body);
-        console.log('User found:', user);
 
         const isMatch = await bcrypt.compare(password, user.password);
         
@@ -86,4 +84,31 @@ const registerUser = async (req, res)=>{
         
     }
 }
-export {registerUser, login}
+
+const updateJobProfile= async (req,res)=>{
+    const {email, newJobProfile} = req.body;
+    try {
+        const user = await userModel.findOne({email});
+        if(!user){
+            res.status(400).json({success:false, message:"user not found please check your email"});
+        }
+
+
+    user.jobProfile = newJobProfile;
+        await user.save();
+        res.json({
+            success: true,
+            message: "Job profile updated successfully",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                jobProfile: user.jobProfile
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+export {registerUser, login,updateJobProfile}
