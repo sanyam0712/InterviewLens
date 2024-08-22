@@ -41,8 +41,14 @@ const login = async(req, res)=>{
 }
 
 
-const createToken = (id)=>{
-    return jwt.sign({id}, process.env.JWT_SECRET);
+const createToken = (id) => {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error('JWT_SECRET environment variable is not set');
+    }
+    return jwt.sign({ id }, secret, {
+        expiresIn: '1h' 
+    });
 }
 
 const registerUser = async (req, res)=>{
