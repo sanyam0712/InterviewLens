@@ -9,14 +9,14 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </BrowserRouter>
     </>
   );
 }
