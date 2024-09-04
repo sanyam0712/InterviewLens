@@ -3,7 +3,10 @@ import './PageNotFound.css'
 
 const PageNotFound = () => {
   return (
-    <div>PageNotFound</div>
+    <div className="page404">
+      <div className='message404'>404- Page Not Found</div>
+    </div>
+    
   )
 }
 
