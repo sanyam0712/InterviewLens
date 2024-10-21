@@ -6,6 +6,7 @@ import 'dotenv/config'
 
 const login = async(req, res)=>{
     const {email,password} = req.body;
+    console.log(email+ "email");
     try {
         const user = await userModel.findOne({email});
         if(!user){
@@ -26,7 +27,8 @@ const login = async(req, res)=>{
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                jobProfile: user.jobProfile
+                jobProfile: user.jobProfile,
+                scoreData: user.scoreData || []
             }
         });
 
@@ -52,7 +54,7 @@ const createToken = (id) => {
 const registerUser = async (req, res)=>{
     console.log("hello i am here");
     
-    const {name, password, email, jobProfile} = req.body;
+    const { name, password, email, jobProfile, scoreData = [] } = req.body;
     try {
         const exist = await userModel.findOne({email});
         if(exist){
@@ -72,11 +74,23 @@ const registerUser = async (req, res)=>{
             name,
             email,
             password: encryptedPassword,
-            jobProfile
+            jobProfile,
+            scoreData
         })
         const user = await newUser.save();
         const token = createToken(user._id);
-        res.json({success:true, token})
+        res.json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                jobProfile: user.jobProfile,
+                scoreData: user.scoreData || []
+            }
+        });
+
         
     } catch (error) {
         console.error(error);
@@ -103,7 +117,8 @@ const updateJobProfile= async (req,res)=>{
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                jobProfile: user.jobProfile
+                jobProfile: user.jobProfile,
+                scoreData: user.scoreData || []
             }
         });
     } catch (error) {
@@ -111,4 +126,6 @@ const updateJobProfile= async (req,res)=>{
         res.status(500).json({ success: false, message: "Server error" });
     }
 }
+
+
 export {registerUser, login,updateJobProfile}
