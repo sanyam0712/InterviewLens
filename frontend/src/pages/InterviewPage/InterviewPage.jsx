@@ -6,7 +6,6 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-import Result from "../Result/Result";
 
 const InterviewPage = ({ profileId }) => {
   const [popup, setPopup] = useState(false);
@@ -34,7 +33,7 @@ const InterviewPage = ({ profileId }) => {
 
     try {
       const genAI = new GoogleGenerativeAI(
-        "AIzaSyDAVQ1TO1kkbDFxMVrTXLm8NTF1s_qWUAg"
+        import.meta.env.VITE_API_KEY
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       let prompt =
