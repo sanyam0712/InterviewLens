@@ -6,6 +6,7 @@ import Contact from "./pages/Contact/Contact";
 import Home from "./pages/Home/Home";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import InterviewPage from "./pages/InterviewPage/InterviewPage";
+import Login from "./components/LoginPopup/Login";
 
 function App() {
 
@@ -15,8 +16,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/interview" element={<InterviewPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/interview" element={<InterviewPage profileId={1} />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
     </>

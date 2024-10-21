@@ -9,6 +9,7 @@
     justify-content: start;
     padding-top: 90px;
     align-items: center;
+    text-align: center;
 }
 .interview-page{
     height: 100vh;
@@ -18,52 +19,12 @@
     align-items: center;
     background-color: #A66326;
 }
-  
-  .box {
-    position: relative;
-    animation: animamzione 1s infinite ease-in;
-    transform-origin: top left;
-    transition-delay: 0s;
-  }
-  
-  .circle {
-    position: absolute;
-    top: 250px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .c1 {
-    height: 200px;
-    width: 200px;
-    animation: wave1 25s infinite ease-in;
-    transform-origin: center center;
-  }
-  
-  .c2 {
-    height: 100px;
-    width: 100px;
-    animation: wave2 25s infinite ease-in;
-    transform-origin: center center;
-  }
-  
-  .c3 {
-    height: 50px;
-    width: 50px;
-    animation: wave3 25s infinite ease-in;
-    transform-origin: center center;
-  }
-  
-  .c4 {
-    transform-origin: center center;
-    animation-delay: 2s;
-  }
-  
-  .c5 {
-    box-sizing: border-box;
-    height: 450px;
-    width: 450px;
-  
-    transform-origin: center center;
-    animation-delay: 1s;
-  }
+.resultpopup{
+    margin: 70px auto;
+  padding: 20px;
+  background: #A66326;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}

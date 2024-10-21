@@ -1,308 +1,134 @@
-import React, { useEffect, useState, useRef } from "react";
-import gsap from "gsap";
+import React, { useEffect, useState } from "react";
 import "./InterviewPage.css";
+import questionDB from '../../assets/database.js';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const InterviewPage = () => {
-  const [speaking, setSpeaking] = useState(0); // 0 shows that the computer is speaking, and 1 for listening
-  const svgRef = useRef(null);
+import Result from "../Result/Result";
+
+const InterviewPage = ({ profileId }) => {
+  const [popup, setPopup] = useState(false);
+  const [questionList, setQuestionList] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answer, setAnswer] = useState("");
+  const [userResult, setuserResult] = useState([]);
+  const [output, setOutput] = useState("");
+  const [numQuestions, setNumQuestions] = useState(3); // Number of questions to ask
+  const [questionAsked, setQuestionAsked] = useState(false); // Flag to check if question is asked
+  
+  // Get questions based on profile ID
+  useEffect(() => {
+    const profile = questionDB.find((p) => p.id === profileId);
+    if (profile) {
+      // Randomize the question list and slice according to the numQuestions variable
+      const shuffledQuestions = profile.Questions.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
+      setQuestionList(shuffledQuestions);
+    }
+  }, [profileId, numQuestions]);
+
+  // code for API start ------------->>>>>>>>>>>
+  const generateStory = async () => {
+    console.log("Generating answer evaluation...");
+
+    try {
+      const genAI = new GoogleGenerativeAI(
+        "AIzaSyDAVQ1TO1kkbDFxMVrTXLm8NTF1s_qWUAg"
+      );
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      let prompt =
+        "this is question: " +
+        questionList[currentQuestionIndex] +
+        " and user answer: " +
+        transcript +
+        " please give me the percentage of answer correctness as per the question and give me answer example output: 80 (no need to tell me anything else)";
+      const result = await model.generateContent(prompt);
+
+      const resultText = result.response.text();
+      setOutput(resultText);
+      setuserResult((prevResults) => [...prevResults, Number(resultText)]);
+    } catch (error) {
+      console.error("Error generating text:", error);
+    }
+  };
+  // code for API end ------------->>>>>>>>>>>
+
+  // code for speech to text start ------------->>>>>>>>>>>
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
+
+  
+  useEffect(()=>{
+    console.log(listening);
+    
+  },[listening])
+
 
   useEffect(() => {
-    let tl;
-
-    if (speaking === 0) {
-      const waveTl = gsap.timeline({ repeat: -1 });
-
-      waveTl.fromTo(
-        ".c1",
-        4,
-        {
-          scale: 1,
-          opacity: 1,
-        },
-        {
-          scale: 4,
-          opacity: 0,
-        },
-        "-=1"
-      );
-      waveTl.to(
-        ".c2",
-        4,
-        {
-          scale: 4,
-          opacity: 0,
-        },
-        0.5
-      );
-
-      waveTl.fromTo(
-        ".c3",
-        4,
-        {
-          opacity: 0,
-          scale: 1,
-        },
-        {
-          opacity: 1,
-          scale: 4,
-        },
-        1
-      );
-
-      console.log(document.querySelector(".c1"));
-    } else {
-    }
-
-    return () => {
-      if (tl) {
-        tl.kill();
+    if (!listening && questionAsked) {
+      // Automatically move to next question after user finishes answering
+      console.log("i am here"+ listening + " "+ questionAsked);
+      
+      generateStory();
+      if (currentQuestionIndex < numQuestions - 1) {
+        setTimeout(() => {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          resetTranscript();
+        }, 10000); // Show "Thank you" for 10 seconds before moving to the next question
+      } else {
+        setPopup(true);
       }
-    };
-  }, [speaking]);
+    }
+  }, [ listening, currentQuestionIndex, numQuestions, resetTranscript]);
 
-  const generateRandomPath = () => {
-    const x1 = Math.random() * 360;
-    const y1 = 80 + Math.random() * 20 - 10;
-    const x2 = Math.random() * 360;
-    const y2 = 80 + Math.random() * 20 - 10;
-    return `M 10 80 C 40 10, 65 10, 200 80 S 150 150, 400 80`;
+  const handleStartInterview = () => {
+    console.log("i am up from down"+ listening + " "+ questionAsked);
+    SpeechRecognition.startListening();
+    setQuestionAsked(true);
+    console.log("i am down"+ listening + " "+ questionAsked);
   };
 
-  let height = window.innerHeight;
-  // ref={svgRef}
   return (
-    <div className="interview-page" style={{ height }}>
+    <div className="interview-page">
       <div className="interview-body">
-        <h1>{speaking==0?"hello!!":"Please Speak"}</h1>
-        <div class="box">
-          <svg
-            class="circle c1"
-            width="225"
-            height="254"
-            viewBox="0 0 225 254"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g filter="url(#filter0_ddf)">
-              <circle
-                cx="112.692"
-                cy="128.125"
-                r="57.7504"
-                transform="rotate(-38.4475 112.692 128.125)"
-                stroke="#283618"
-                stroke-width="8"
-              />
-            </g>
-            <defs>
-              <filter
-                id="filter0_ddf"
-                x="0.934082"
-                y="0.367432"
-                width="223.516"
-                height="253.516"
-                filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="14" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 0.486275 0 0 0 0 0.458824 0 0 0 0 0.435294 0 0 0 0.45 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow"
-                />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="-16" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.8 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="effect1_dropShadow"
-                  result="effect2_dropShadow"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect2_dropShadow"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  stdDeviation="7.5"
-                  result="effect3_foregroundBlur"
-                />
-              </filter>
-            </defs>
-          </svg>
-
-          <svg
-            class="circle c2"
-            width="225"
-            height="254"
-            viewBox="0 0 225 254"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g filter="url(#filter0_ddf)">
-              <circle
-                cx="112.692"
-                cy="128.125"
-                r="57.7504"
-                transform="rotate(-38.4475 112.692 128.125)"
-                stroke="#283618"
-                stroke-width="8"
-              />
-            </g>
-            <defs>
-              <filter
-                id="filter0_ddf"
-                x="0.934082"
-                y="0.367432"
-                width="223.516"
-                height="253.516"
-                filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="14" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 0.486275 0 0 0 0 0.458824 0 0 0 0 0.435294 0 0 0 0.45 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow"
-                />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="-16" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.8 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="effect1_dropShadow"
-                  result="effect2_dropShadow"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect2_dropShadow"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  stdDeviation="7.5"
-                  result="effect3_foregroundBlur"
-                />
-              </filter>
-            </defs>
-          </svg>
-
-          <svg
-            class="circle c3"
-            width="225"
-            height="254"
-            viewBox="0 0 225 254"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g filter="url(#filter0_ddf)">
-              <circle
-                cx="112.692"
-                cy="128.125"
-                r="57.7504"
-                transform="rotate(-38.4475 112.692 128.125)"
-                stroke="#283618"
-                stroke-width="8"
-              />
-            </g>
-            <defs>
-              <filter
-                id="filter0_ddf"
-                x="0.934082"
-                y="0.367432"
-                width="223.516"
-                height="253.516"
-                filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="14" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 0.486275 0 0 0 0 0.458824 0 0 0 0 0.435294 0 0 0 0.45 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow"
-                />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                />
-                <feOffset dy="-16" />
-                <feGaussianBlur stdDeviation="12.5" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.8 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="effect1_dropShadow"
-                  result="effect2_dropShadow"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect2_dropShadow"
-                  result="shape"
-                />
-                <feGaussianBlur
-                  stdDeviation="7.5"
-                  result="effect3_foregroundBlur"
-                />
-              </filter>
-            </defs>
-          </svg>
+        <h1>{listening ? "Listening..." : "Please Speak"}</h1>
+        <p>Question: {questionList[currentQuestionIndex]}</p>
+        <div>
+          <p>Microphone: {listening ? "on" : "off"}</p>
+          <button onClick={handleStartInterview}>Start</button>
+          <button onClick={SpeechRecognition.stopListening}>Stop</button>
+          <p>{transcript}</p>
+          <p>{`You are ${output}% correct`}</p>
         </div>
+        {popup ? (
+          <ResultPOPup result={userResult} />
+        ) : (
+          <button
+            onClick={() => {
+              setPopup(true);
+            }}
+          >
+            End Test
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
 export default InterviewPage;
+
+const ResultPOPup = ({ result }) => {
+  let totalScore = result.reduce((acc, curr) => acc + curr, 0);
+  let averageScore = totalScore / result.length;
+  return <div className="resultpopup">Your result is {averageScore.toFixed(2)}%</div>;
+};
