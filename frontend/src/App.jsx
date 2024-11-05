@@ -17,7 +17,7 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/interview" element={<InterviewPage profileId={1} />} />
+          <Route path="/interview" element={<InterviewPage profileId={1} numQuestions={3} />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
     </>
