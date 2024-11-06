@@ -10,7 +10,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // - interview page call with a parameters profile ID(profileId) and number of questions (numQuestions) - DONE
 // - when user enter in interview page a popup was come witha button let's started - DONE
 // - question one display on screen ans computer will speak the question after the computer speaking was end
-//  -
+// -
 // - the screen show listening on and start taking input from user if computer not get any new input from user then it will assumed that user done wit speaking.
 // - when user done with speaking then computer sends the collected user input and the question to the gemini AI API and and gemini will return the percentage depends upon answer accuracy and length of answer.
 // - the API result will stored in a list and again start with the next question
@@ -29,7 +29,6 @@ const InterviewPage = ({ profileId, numQuestions }) => {
   const [isListening, setIsListening] = useState(false);
   const [timer, setTimer] = useState(null);
 
-  // Get questions based on profile ID
   useEffect(() => {
     const profile = questionDB.find((p) => p.id === profileId);
     if (profile) {
@@ -44,9 +43,8 @@ const InterviewPage = ({ profileId, numQuestions }) => {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  // Handle question asking and listening
   useEffect(() => {
-    if (startPopup) return; // Don't do anything if the popup is still open
+    if (startPopup) return;
 
     if (currentQuestionIndex < questionList.length) {
       if (!isListening) {
@@ -58,7 +56,7 @@ const InterviewPage = ({ profileId, numQuestions }) => {
         }, 4000);
       }
     } else {
-      setPopup(true); // Show the results popup
+      setPopup(true); 
     }
   }, [isListening]);
 
@@ -69,24 +67,20 @@ const InterviewPage = ({ profileId, numQuestions }) => {
   }, [currentQuestionIndex])
   
 
-  // Function to ask a question and start listening
   const askQuestion = () => {
     if (currentQuestionIndex >= 0 && currentQuestionIndex < questionList.length) {
       const question = questionList[currentQuestionIndex];
       console.log(`Asking question: ${question}`);
 
-      // Speak the question using the Web Speech API
       const utterance = new SpeechSynthesisUtterance(questionList[currentQuestionIndex]);
       speechSynthesis.speak(utterance);
 
       SpeechRecognition.startListening({ continuous: true });
       setIsListening(true);
-      // Start the inactivity timer
       startInactivityTimer();
     }
   };
 
-  // Function to generate story and get the result from AI
   const generateStory = async () => {
     console.log("Generating answer evaluation...");
 
@@ -105,7 +99,7 @@ const InterviewPage = ({ profileId, numQuestions }) => {
       const resultText = result.response.text();
       setOutput(resultText);
       setUserResult((prevResults) => [...prevResults, Number(resultText)]);
-      resetTranscript(); // Reset the transcript for the next question
+      resetTranscript(); 
       console.log("Generating answer done");
       
 
@@ -114,10 +108,9 @@ const InterviewPage = ({ profileId, numQuestions }) => {
     }
   };
 
-  // Function to start the inactivity timer
   const startInactivityTimer = () => {
     if (timer) {
-      clearTimeout(timer); // Clear any existing timer
+      clearTimeout(timer); 
     }
 
     const newTimer = setTimeout(() => {
