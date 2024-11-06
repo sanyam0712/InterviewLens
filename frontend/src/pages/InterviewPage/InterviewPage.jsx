@@ -5,6 +5,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useLocation } from "react-router-dom";
+
 
 // what i want to do (instructions)
 // - interview page call with a parameters profile ID(profileId) and number of questions (numQuestions) - DONE
@@ -19,7 +21,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 
 
-const InterviewPage = ({ profileId, numQuestions }) => {
+const InterviewPage = () => {
+  const location = useLocation();
+  const { profileId, numQuestions } = location.state || {};
   const [startPopup, setStartPopup] = useState(true);
   const [popup, setPopup] = useState(false);
   const [questionList, setQuestionList] = useState([]);
@@ -88,11 +92,16 @@ const InterviewPage = ({ profileId, numQuestions }) => {
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       let prompt =
-        "this is question: " +
-        questionList[currentQuestionIndex] +
-        " and user answer: " +
-        transcript +
-        " please give me the percentage of answer correctness as per the question and give me answer example output: 80 (no need to tell me anything else)";
+  `You are evaluating a user's response to an interview question. 
+  Here is the question: "${questionList[currentQuestionIndex]}"
+  And here is the user's response: "${transcript}"
+  Please assess the response based on the following criteria:
+  1. Relevance: Does the answer address the question?
+  2. Accuracy: Is the information in the response factually correct?
+  3. Completeness: Does the answer cover key points that are expected for this role?
+
+  Based on these factors, provide a score between 0 and 100, where 100 is a perfect answer and 0 means no relevance or correctness. Output the score as a number only, without any additional comments or explanation. Example: 85`
+
       const result = await model.generateContent(prompt);
       console.log(prompt);
 
