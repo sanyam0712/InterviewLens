@@ -5,14 +5,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #A66326; /* Deep brown */
+    background-color: #333333; /* Dark gray */
 }
 
 /* interview-body styling */
 .interview-body {
     height: 85vh;
     width: 80vw;
-    background-color: #FEFAE0; /* Light cream */
+    background-color: #F2F2F2; /* Light gray */
     border-radius: 15px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     padding: 40px;
@@ -21,14 +21,14 @@
     justify-content: flex-start;
     align-items: center;
     text-align: center;
-    color: #5F3829; /* Soft brown */
+    color: #2D2D2D; /* Medium dark gray */
     font-family: Arial, sans-serif;
     font-size: 1.2rem;
 }
 
 /* Styling for question and microphone status */
 .interview-body h1 {
-    color: #A66326;
+    color: #000000; /* Black */
     font-size: 2rem;
     margin-bottom: 10px;
 }
@@ -40,8 +40,8 @@
 
 /* Popup styling */
 .popup {
-    background: #A66326;
-    color: #FEFAE0;
+    background: #444444; /* Medium gray */
+    color: #F2F2F2; /* Light gray */
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
@@ -57,8 +57,8 @@
 
 /* Start button */
 .popup button, .interview-body button {
-    background-color: #5F3829;
-    color: #FEFAE0;
+    background-color: #2D2D2D; /* Darker gray */
+    color: #F2F2F2; /* Light gray */
     font-size: 1.1rem;
     padding: 10px 20px;
     border: none;
@@ -68,15 +68,15 @@
 }
 
 .popup button:hover, .interview-body button:hover {
-    background-color: #7A4933;
+    background-color: #555555; /* Hover medium gray */
 }
 
 /* Result popup styling */
 .resultpopup {
     margin: 50px auto;
     padding: 25px;
-    background: #A66326;
-    color: #FEFAE0;
+    background: #444444; /* Medium gray */
+    color: #F2F2F2; /* Light gray */
     border-radius: 8px;
     width: 40%;
     text-align: center;
@@ -89,19 +89,18 @@
 .interview-body p#question {
     font-weight: bold;
     font-size: 1.3rem;
-    color: #A66326;
+    color: #000000; /* Black */
 }
 
 .interview-body p#microphone {
     font-size: 1rem;
-    color: #5F3829;
+    color: #2D2D2D; /* Medium dark gray */
     margin-top: 20px;
     opacity: 0.8;
 }
 
 .interview-body p#transcript {
     font-style: italic;
-    color: #333333;
+    color: #333333; /* Dark gray */
     margin: 10px 0;
 }
-

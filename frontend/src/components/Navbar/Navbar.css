@@ -326,3 +326,9 @@ html, body {
 .modal button:hover {
   background: #0056b3;
 }
+
+.action-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

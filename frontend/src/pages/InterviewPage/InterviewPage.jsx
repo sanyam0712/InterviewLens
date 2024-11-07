@@ -186,15 +186,3 @@ const ResultPOPup = ({ result }) => {
     <div className="resultpopup">Your result is {averageScore.toFixed(2)}%</div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
