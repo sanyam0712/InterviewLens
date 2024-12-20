@@ -1,0 +1,70 @@
+.about-container {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background: #000;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navbar {
+    background: #111;
+    padding: 1rem 2rem;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .about-hero {
+    padding: 4rem 2rem;
+    background: #222;
+  }
+  
+  .about-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-hero p {
+    font-size: 1.5rem;
+    color: #ddd;
+  }
+  
+  .about-content {
+    padding: 4rem 2rem;
+    background: #111;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .about-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  
+  .about-content p {
+    font-size: 1.2rem;
+    color: #ddd;
+    line-height: 1.8;
+  }
+  
+  .footer {
+    padding: 2rem;
+    background: #000;
+  }
+  
+  .footer-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-section p {
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+  

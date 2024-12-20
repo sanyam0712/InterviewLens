@@ -119,12 +119,12 @@ function Navbar() {
                   lense
                 </h1>
               </div>
-              <h5>interview prep made simple</h5>
+              {/* <h5>interview prep made simple</h5> */}
             </div>
           </div>
           <div className="heroft">
-            <div>ai integrated</div>
-            <div>ready to use</div>
+            {/* <div>ai integrated</div>
+            <div>ready to use</div> */}
           </div>
         </div>
 

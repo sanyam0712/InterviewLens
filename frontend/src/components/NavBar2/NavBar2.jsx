@@ -1,71 +1,66 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./NavBar2.css";
+// Home.js
+import React from 'react';
+import './Navbar2.css';
 
-const NavBar2 = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const navigate = useNavigate();
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
-  const roles = [
-    "Front-end Developer",
-    "Back-end Developer",
-    "Full-stack Developer",
-    "Data Scientist",
-    "DevOps Engineer",
-    "Database Administrator"
-  ];
-
-  const handleOptionChange = (index) => {
-    setSelectedRole(index + 1);
-  };
-
-  const startInterview = () => {
-    if (selectedRole) {
-      navigate("/interview", {
-        state: { profileId: selectedRole, numQuestions: 3 },
-      });
-      closeModal();
-    } else {
-      alert("Please select a role.");
-    }
-  };
-
+function NavBar2() {
   return (
-    <nav className="navbar">
-      <div className="nav-items">
-        <a href="#home" className="nav-link">Home</a>
-        <a href="#about" className="nav-link">About Us</a>
-      </div>
-      <button className="button" onClick={openModal}>Start Interview</button>
+    <div className="home-container">
+      <nav className="navbar">
+        <div className="logo">InterviewLens</div>
+        <div className="nav-buttons">
+          <button>Topics</button>
+          <button>Login</button>
+        </div>
+      </nav>
 
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Select an Interview Type</h2>
-            <div className="options">
-              {roles.map((role, index) => (
-                <label key={index} className="option-label">
-                  <input
-                    type="radio"
-                    value={index + 1}
-                    checked={selectedRole === index + 1}
-                    onChange={() => handleOptionChange(index)}
-                  />
-                  {role}
-                </label>
-              ))}
-            </div>
-            <button className="start-button" onClick={startInterview}>Start Interview</button>
-            <button className="close-button" onClick={closeModal}>Close</button>
+      <header className="hero">
+        <h1>Welcome to InterviewLens</h1>
+        <p>Your AI-powered interview preparation platform.</p>
+        <button className="start-btn">Start Interview</button>
+      </header>
+
+      <section className="features">
+        <h2>Core Features</h2>
+        <div className="feature-cards">
+          <div className="feature-card">
+            <h3>AI-driven Mock Interviews</h3>
+            <p>Simulate real interview experiences with AI-generated questions and feedback.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Job-specific Interview Questions</h3>
+            <p>Get tailored questions based on your selected job role and expertise level.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Facial Expression Analysis</h3>
+            <p>Advanced AI evaluates your facial expressions to assess confidence and presence.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Performance Reports</h3>
+            <p>Receive comprehensive reports on your answers, highlighting strengths and areas for improvement.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Real-time Feedback</h3>
+            <p>Instant AI feedback on your responses for continuous learning and better preparation.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Personalized Study Plans</h3>
+            <p>Create custom study plans based on your progress and learning needs.</p>
           </div>
         </div>
-      )}
-    </nav>
+      </section>
+
+      <footer className="footer">
+        <div className="footer-section">
+          <h3>About Us</h3>
+          <p>Learn more about our mission and team dedicated to improving your interview skills.</p>
+        </div>
+        <div className="footer-section">
+          <h3>Contact</h3>
+          <p>Email: contact@interviewlens.com</p>
+        </div>
+      </footer>
+    </div>
   );
-};
+}
 
 export default NavBar2;

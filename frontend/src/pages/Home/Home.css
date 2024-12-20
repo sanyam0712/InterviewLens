@@ -1,0 +1,173 @@
+.home-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: #fff;
+    background: #000;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .features {
+    padding: 4rem 2rem;
+    background: #111;
+  }
+  
+  .features h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+  }
+  
+  .feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .feature-card {
+    background: #222;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  }
+  
+  .feature-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  
+  .feature-card p {
+    font-size: 1.2rem;
+    color: #ddd;
+  }
+  
+
+
+
+  /* Model css*/
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out; /* Added fade-in animation */
+  }
+  
+  /* Modal Box */
+  .modal {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    padding: 30px 20px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    transform: scale(0);
+    opacity: 0;
+  }
+  
+  /* Title Style */
+  .modal h2 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  /* Option List Style */
+  .modal ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .modal li {
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 10px 0;
+    background-color: #333;
+  }
+  
+  .modal li:hover {
+    background-color: #555; /* Slightly lighter gray */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  .modal li[style] {
+    background-color: #4CAF50; /* Highlight selected item */
+    color: #fff;
+  }
+  
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+  }
+  
+  .action-buttons button {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 48%;
+  }
+  
+  .action-buttons button:hover {
+    background-color: #444;
+    transform: scale(1.05);
+  }
+  
+  /* Close Button Styling */
+  .close-btn {
+    background-color: #e74c3c; /* Red close button */
+  }
+  
+  .close-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Next Button Styling */
+  .next-btn {
+    background-color: #3498db; /* Blue next button */
+  }
+  
+  .next-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Modal Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  

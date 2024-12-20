@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 
 export const startEmotionAnalysis = (req, res) => {
-    exec('python3 emotion_analyzer.py', (error, stdout, stderr) => {
+    exec('python emotion_analyzer.py', (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing Python script: ${error}`);
             res.status(500).json({ error: "Failed to start emotion analysis." });
