@@ -104,3 +104,17 @@
     color: #333333; /* Dark gray */
     margin: 10px 0;
 }
+
+.interview-parts{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.camera-div video{
+    width: 10vp;
+}
+.interview-right{
+    width: 100%;
+}

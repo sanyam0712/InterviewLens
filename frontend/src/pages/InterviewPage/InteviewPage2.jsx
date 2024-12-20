@@ -22,6 +22,7 @@ const InterviewPage2 = () => {
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
   useEffect(() => {
+    
     const profile = questionDB.find((p) => p.id === profileId);
     if (profile) {
       const shuffledQuestions = profile.Questions.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
