@@ -6,8 +6,6 @@ import Contact from "./pages/Contact/Contact";
 import Home from "./pages/Home/Home.jsx";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import InterviewPage from "./pages/InterviewPage/InterviewPage";
-import NavBar2 from "./components/NavBar2/NavBar2";
-import Navbar from "./components/Navbar/Navbar";
 import Result from "./pages/Result/Result.jsx";
 import Login from "./pages/Login/Login.jsx";
 import { useSelector, useDispatch } from "react-redux";
