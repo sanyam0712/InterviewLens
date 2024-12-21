@@ -5,7 +5,65 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
+import Result from "../Result/Result.jsx";
+
+
+
+
+// const faqs=[
+//   {
+//     question: "Explain React lifecycle methods.",
+//     answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra lorem eu dolor rhoncus, at scelerisque ligula gravida. Sed porta id mi sit amet convallis. Etiam iaculis massa sit amet lacus blandit sodales.",
+//     score: 10,
+//     rating: 3,
+//     suggest: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+//     open: true
+//   },
+//   {
+//     question: "What is a closure in JavaScript?",
+//     answer: "A closure is a function that has access to its own scope, the scope in which it was created, and the global scope.",
+//     score: 9,
+//     rating: 4,
+//     suggest: "Understand the concept of lexical scoping.",
+//     open: false
+//   },
+//   {
+//     question: "What is the purpose of React hooks?",
+//     answer: "React hooks allow you to use state and other React features without writing a class component.",
+//     score: 8,
+//     rating: 5,
+//     suggest: "Try using `useState` and `useEffect` hooks in your projects.",
+//     open: false
+//   },
+//   {
+//     question: "Explain the difference between var, let, and const.",
+//     answer: "var is function-scoped, let and const are block-scoped. const variables are immutable after assignment.",
+//     score: 7,
+//     rating: 2,
+//     suggest: "Use `let` and `const` over `var` in modern JavaScript.",
+//     open: true
+//   },
+//   {
+//     question: "What is an API?",
+//     answer: "An API (Application Programming Interface) is a set of rules that allows different software applications to communicate with each other.",
+//     score: 6,
+//     rating: 3,
+//     suggest: "Learn how to interact with APIs using fetch or Axios.",
+//     open: false
+//   },
+//   {
+//     question: "What is a promise in JavaScript?",
+//     answer: "A promise is an object representing the eventual completion or failure of an asynchronous operation.",
+//     score: 8,
+//     rating: 4,
+//     suggest: "Practice using promises with async/await.",
+//     open: true
+//   }
+// ]
+
+
+
 
 const InterviewPage = ({ profileId, numQuestions }) => {
   const location = useLocation();
@@ -20,6 +78,25 @@ const InterviewPage = ({ profileId, numQuestions }) => {
   const [timer, setTimer] = useState(null);
   const [cameraOn, setCameraOn] = useState(false);
   const videoRef = useRef(null);
+  const navigate = useNavigate();
+
+  const [scoreData, setScoreData] = useState([])
+  const [questionData, setQuestionData] = useState([]) // this will transfer to result page
+  const [newQuestion, setNewQuestion] = useState({
+    question: "",
+    answer: "",
+    score: 0,
+    rating: 0,
+    suggest: "",
+    open: false
+  });
+
+  const handleQuestionScoreChange = ({ name, value }) => {
+    setNewQuestion((prevFaq) => ({
+      ...prevFaq,
+      [name]: value
+    }));
+  };
 
   const {
     transcript,
@@ -28,6 +105,8 @@ const InterviewPage = ({ profileId, numQuestions }) => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+
+  // code for question suffle
   useEffect(() => {
     console.log(profileId);
     const profile = questionDB.find((p) => p.id === profileId);
@@ -39,6 +118,7 @@ const InterviewPage = ({ profileId, numQuestions }) => {
     }
   }, [profileId, numQuestions]);
 
+  // code for camera
   useEffect(() => {
     if (cameraOn) {
       const startCamera = async () => {
@@ -70,6 +150,7 @@ const InterviewPage = ({ profileId, numQuestions }) => {
   const askQuestion = () => {
     if (currentQuestionIndex < questionList.length) {
       const question = questionList[currentQuestionIndex];
+      handleQuestionScoreChange({name:"question", value:question})
       const utterance = new SpeechSynthesisUtterance(question);
       speechSynthesis.speak(utterance);
 
@@ -79,6 +160,7 @@ const InterviewPage = ({ profileId, numQuestions }) => {
         startInactivityTimer();
       };
     } else {
+      
       setPopup(true);
     }
   };
@@ -99,11 +181,36 @@ const InterviewPage = ({ profileId, numQuestions }) => {
 
       const result = await model.generateContent(prompt);
       const resultText = await result.response.text();
+      handleQuestionScoreChange({name:"answer", value:transcript})
+      handleQuestionScoreChange({name:"score", value:Number(resultText)})
+      
       setOutput(resultText);
       setUserResult((prevResults) => [...prevResults, Number(resultText)]);
       resetTranscript();
       setIsListening(false);
+      setQuestionData([...questionData, newQuestion]);
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    } catch (error) {
+      console.error("Error generating text:", error);
+    }
+  };
+
+  const generateAnswerSuggestion = async () => {
+    try {
+      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      let prompt = `You are evaluating a user's response to an interview question. 
+      Here is the question: "${questionList[currentQuestionIndex]}"
+      And here is the user's response: "${transcript}"
+      Please assess the response based on the following criteria:
+      1. Relevance: Does the answer address the question?
+      2. Accuracy: Is the information in the response factually correct?
+      3. Completeness: Does the answer cover key points that are expected for this role?
+
+      Based on these factors, Provide me suggestion only in two lines`;
+      const result = await model.generateContent(prompt);
+      const resultText = await result.response.text();
+      handleQuestionScoreChange({name:"suggest", value:resultText})
     } catch (error) {
       console.error("Error generating text:", error);
     }
@@ -117,7 +224,9 @@ const InterviewPage = ({ profileId, numQuestions }) => {
     const newTimer = setTimeout(() => {
       setIsListening(false);
       SpeechRecognition.stopListening();
+      generateAnswerSuggestion();
       generateStory();
+
     }, 6000);
 
     setTimer(newTimer);
@@ -164,10 +273,17 @@ const InterviewPage = ({ profileId, numQuestions }) => {
               </button>
 
               {popup ? (
-                <ResultPOPup result={userResult} />
+                // <ResultPOPup result={userResult} />
+                
+                // <Result faqs:faqs/> 
+                navigate("/result", {
+                  state: { questionData:questionData},
+                })
               ) : (
                 <button
                   onClick={() => {
+                    console.log(questionData);
+                    
                     setPopup(true);
                   }}
                 >

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './Home.css';
 import { useNavigate } from "react-router-dom";
 import { gsap, Power3 } from "gsap";
+import InterviewPage from "../InterviewPage/InterviewPage";
 
 function Home() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -95,6 +96,7 @@ const Modal = ({ isOpen, onClose }) => {
         navigate("/interview", {
           state: { profileId: selection, numQuestions: 3 },
         });
+        
       } else {
         alert("Please select a role.");
       }
