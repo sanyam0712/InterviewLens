@@ -6,11 +6,6 @@ config();
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    headers: {
-      'Content-Type': 'application/javascript',
-    },
-  },
   plugins: [react()],
   define: {
     'process.env': process.env
