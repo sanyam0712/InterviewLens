@@ -7,9 +7,28 @@ const Result = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
-  
+  const [scores, setScores] = useState([]);
   const questionData = location.state?.questionData || [];
   const [faqs, setFaqs] = useState(questionData);
+  console.log(questionData);
+  
+  useEffect(() => {
+    const fetchScore = async () => {
+      try {
+        const response = await fetch(
+          "https://interview-lens.vercel.app/api/user/scores/sarthak@gmail.com"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setScores(data.scoreData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchScore();
+  }, []);
 
   useEffect(() => {
     if (!faqs.length || !isLoggedIn) {
@@ -17,49 +36,78 @@ const Result = () => {
     }
   }, [faqs, isLoggedIn, navigate]);
 
-  const average = faqs.reduce((acc, curr) => acc + curr.score, 0) / faqs.length || 0;
+  const average =
+    faqs.reduce((acc, curr) => acc + (curr.score || 0), 0) / faqs.length || 0;
 
-  const toggleFAQ = (index) => {
-    setFaqs((prevFaqs) =>
-      prevFaqs.map((faq, i) => ({
-        ...faq,
-        open: i === index ? !faq.open : faq.open,
-      }))
-    );
+  const toggleFAQ = (index, section) => {
+    if (section === "faqs") {
+      setFaqs((prevFaqs) =>
+        prevFaqs.map((faq, i) => ({
+          ...faq,
+          open: i === index ? !faq.open : faq.open,
+        }))
+      );
+    } else if (section === "scores") {
+      setScores((prevScores) =>
+        prevScores.map((score, i) => ({
+          ...score,
+          open: i === index ? !score.open : score.open,
+        }))
+      );
+    }
   };
 
   return (
     <div className="result">
       <h1>{average.toFixed(2)}% answers are correct</h1>
       <div className="answers-result">
-        <AnswerSection
-          title="Answer Details"
-          faqs={faqs}
-          toggleFAQ={toggleFAQ}
-        />
-        <AnswerSection
-          title="Previous Play"
-          faqs={faqs}
-          toggleFAQ={toggleFAQ}
-        />
+        <div className="answer-section">
+          <h2>Answer Details</h2>
+          {faqs.map((faq, index) => (
+            <FAQ
+              faq={faq}
+              index={index}
+              key={`faq-${index}`}
+              toggleFAQ={() => toggleFAQ(index, "faqs")}
+            />
+          ))}
+        </div>
+        <div className="answer-section">
+          <h2>Previous Play</h2>
+          {scores.map((score, index) => (
+            <div
+              className={`faq ${score.open ? "open" : ""}`}
+              onClick={() => toggleFAQ(index, "scores")}
+              key={`score-${index}`}
+            >
+              <div className="faq-question">
+                <div>Job Profile: {score.jobProfile}</div>
+                <div>Score: {score.totalScore}</div>
+                <div>Rating: {score.rating}</div>
+              </div>
+              {score.open &&
+                score.questions.map((question, i) => (
+                  <div className="faq-answer" key={`question-${i}`}>
+                    <div>
+                      <b>Question:</b> {question.questionText}
+                    </div>
+                    <div>
+                      <b>Suggestion:</b> {question.score}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-const AnswerSection = ({ title, faqs, toggleFAQ }) => (
-  <div className="answer-section">
-    <h2>{title}</h2>
-    {faqs.map((faq, index) => (
-      <FAQ faq={faq} index={index} key={index} toggleFAQ={toggleFAQ} />
-    ))}
-  </div>
-);
-
-const FAQ = ({ faq, index, toggleFAQ }) => (
+const FAQ = ({ faq, toggleFAQ }) => (
   <div
     className={`faq ${faq.open ? "open" : ""}`}
-    onClick={() => toggleFAQ(index)}
+    onClick={toggleFAQ}
   >
     <div className="faq-question">
       <div>{faq.question}</div>

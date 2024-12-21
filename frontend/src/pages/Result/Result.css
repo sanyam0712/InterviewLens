@@ -1,120 +1,77 @@
-/* General styling for the entire result section */
 .result {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Heading for the overall result */
-  .result h1 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #ccc;
-  }
-  
-  /* Container for the FAQ list */
-  .answers-result {
-    margin-top: 20px;
-  }
-  
-  /* FAQ item container */
-  .faq {
-    background-color: #333;
-    border: 1px solid #444;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    padding: 10px;
-  }
-  
-  /* Style when FAQ is open */
-  .faq.open {
-    background-color: #2a2a2a;
-    border-color: #555;
-  }
-  
-  /* FAQ question styling */
-  .faq-question {
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-    display: grid;
-    grid-template-columns: 6fr 1fr 1fr;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 12px 15px;
-    background-color: #444;
-    border-radius: 8px;
-    color: #fff;
-    transition: background-color 0.3s ease;
-    
-  }
-  
-  /* Hover effect on FAQ question */
-  .faq-question:hover {
-    background-color: #555;
-  }
-  
-  /* Subtle separator line for visual appeal */
-  .faq-question div {
-    margin-right: 12px;
-  }
-  
-  /* Answer section styling */
-  .faq-answer {
-    display: none;
-    padding: 12px 20px;
-    background-color: #555;
-    color: #ddd;
-    border-radius: 8px;
-    margin-top: 8px;
-    font-size: 14px;
-  }
-  
-  /* When FAQ is open, show the answer */
-  .faq.open .faq-answer {
-    display: block;
-  }
-  
-  /* Rating and score in a clean format */
-  .faq-question span {
-    font-size: 14px;
-    color: #bbb;
-    background-color: #666;
-    padding: 4px 8px;
-    border-radius: 5px;
-  }
-  
-  /* Style for the rating section in FAQ */
-  .faq-question .score,
-  .faq-question .rating {
-    font-size: 14px;
-    background-color: #888;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  /* Styling for the suggestion text */
-  .faq .suggest {
-    font-style: italic;
-    color: #bbb;
-    margin-top: 12px;
-  }
-      
-  .answers-result{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .answers-result h2{
-    padding-bottom: 20px;
-    text-align: center;
-  }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.result h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+.answers-result {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.answer-section {
+  padding: 10px;
+}
+
+.answer-section h2{
+  text-align: center;
+  padding-bottom: 10px;
+}
+.faq {
+  background-color: #333;
+  border: 1px solid #444;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  padding: 10px;
+}
+
+.faq.open {
+  background-color: #2a2a2a;
+  border-color: #555;
+}
+
+.faq-question {
+  display: grid;
+  grid-template-columns: 5.5fr 1fr 1fr;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 12px 15px;
+  background-color: #444;
+  border-radius: 8px;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+  background-color: #555;
+}
+
+.faq-answer {
+  display: none;
+  flex-direction: column;
+  padding: 12px 20px;
+  background-color: #555;
+  color: #ddd;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.faq.open .faq-answer {
+  display: flex;
+}
