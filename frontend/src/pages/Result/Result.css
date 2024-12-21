@@ -5,7 +5,7 @@
     color: #fff;
     padding: 30px;
     border-radius: 8px;
-    max-width: 800px;
+    width: 90%;
     margin: 20px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
@@ -41,9 +41,11 @@
   
   /* FAQ question styling */
   .faq-question {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: 6fr 1fr 1fr;
     cursor: pointer;
     font-weight: bold;
     padding: 12px 15px;
@@ -51,6 +53,7 @@
     border-radius: 8px;
     color: #fff;
     transition: background-color 0.3s ease;
+    
   }
   
   /* Hover effect on FAQ question */
@@ -106,3 +109,12 @@
     margin-top: 12px;
   }
       
+  .answers-result{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .answers-result h2{
+    padding-bottom: 20px;
+    text-align: center;
+  }

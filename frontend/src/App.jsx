@@ -10,18 +10,21 @@ import NavBar2 from "./components/NavBar2/NavBar2";
 import Navbar from "./components/Navbar/Navbar";
 import Result from "./pages/Result/Result.jsx";
 import Login from "./pages/Login/Login.jsx";
-// import InterviewPage2 from "./pages/InterviewPage/InteviewPage2";
+import { useSelector, useDispatch } from "react-redux";
 
 function App() {
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   return (
-    <>
+    < >
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login/>} />
-          <Route path="/interview" element={<InterviewPage profileId={1} numQuestions={3} />} />
-          <Route path="/result" element={<Result />} />
+          <Route path="/interview" element={isLoggedIn?<InterviewPage />:<Login/>} />
+          <Route path="/result" element={isLoggedIn?<Result />:<Login/>} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
     </>

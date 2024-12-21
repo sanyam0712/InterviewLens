@@ -6,6 +6,8 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login, logout } from "../../app/authSlice.js";
 
 const InterviewPage = () => {
   const [startPopup, setStartPopup] = useState(true);
@@ -23,6 +25,9 @@ const InterviewPage = () => {
   const location = useLocation();
   const { profileId, numQuestions } = location.state || {};
 
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const {
     transcript,
     listening,
@@ -31,9 +36,17 @@ const InterviewPage = () => {
   } = useSpeechRecognition();
 
   useEffect(() => {
+    if (!numQuestions || !isLoggedIn) {
+      navigate("/");
+    }
+  }, [numQuestions, isLoggedIn, navigate]);
+
+  useEffect(() => {
     const profile = questionDB.find((p) => p.id === profileId);
     if (profile) {
-      const shuffledQuestions = profile.Questions.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
+      const shuffledQuestions = profile.Questions.sort(
+        () => 0.5 - Math.random()
+      ).slice(0, numQuestions);
       setQuestionList(shuffledQuestions);
     }
   }, [profileId, numQuestions]);
@@ -42,7 +55,9 @@ const InterviewPage = () => {
     if (cameraOn) {
       const startCamera = async () => {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
           }
@@ -96,12 +111,12 @@ const InterviewPage = () => {
       Based on these factors, provide a score between 0 and 100, where 100 is a perfect answer and 0 means no relevance or correctness. Output the score as a number only, without any additional comments or explanation. Example: 85`;
       const result = await model.generateContent(prompt);
       console.log("result" + result.response.text());
-      
+
       const score = parseInt(result.response.text(), 10);
       const suggestionPrompt = `Based on the user's response: "${transcript}", provide a two-line suggestion for improvement.`;
       const suggestionResult = await model.generateContent(suggestionPrompt);
       const suggestion = suggestionResult.response.text();
-      console.log("suggestation" +suggestion);
+      console.log("suggestation" + suggestion);
       setQuestionData((prevData) => [
         ...prevData,
         {
@@ -154,7 +169,9 @@ const InterviewPage = () => {
       {startPopup ? (
         <div className="popup">
           <h2>Welcome to the Interview</h2>
-          <button onClick={() => setStartPopup(false)}>Let's Get Started</button>
+          <button onClick={() => setStartPopup(false)}>
+            Let's Get Started
+          </button>
         </div>
       ) : (
         <div className="interview-body">
@@ -180,7 +197,11 @@ const InterviewPage = () => {
             <div className="camera-div">
               {cameraOn && (
                 <video
-                  style={{ width: "300px", height: "200px", borderRadius: "10px" }}
+                  style={{
+                    width: "300px",
+                    height: "200px",
+                    borderRadius: "10px",
+                  }}
                   ref={videoRef}
                   autoPlay
                   playsInline
