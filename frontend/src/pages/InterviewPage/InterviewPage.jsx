@@ -9,7 +9,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "../../app/authSlice.js";
 
-
 const InterviewPage = () => {
   const [startPopup, setStartPopup] = useState(true);
   const [popup, setPopup] = useState(false);
@@ -19,13 +18,11 @@ const InterviewPage = () => {
   const [output, setOutput] = useState();
   const [isListening, setIsListening] = useState(false);
   const [timer, setTimer] = useState(null);
-  const [cameraOn, setCameraOn] = useState(false);
-  const videoRef = useRef(null);
   const navigate = useNavigate();
   const [questionData, setQuestionData] = useState([]);
   const location = useLocation();
   const { profileId, numQuestions } = location.state || {};
-
+  const [emotion, setEmotion] = useState("");
   const { isLoggedIn, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -35,6 +32,28 @@ const InterviewPage = () => {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+
+
+  useEffect(() => {  
+        fetch("http://localhost:4000/api/emotion/start-analysis")
+          .then((response) => response.json())
+          .then((emotionData) => {
+            const positiveSum = (emotionData.happy || 0) + (emotionData.neutral || 0);
+            const negativeSum = (emotionData.sad || 0) + (emotionData.fear || 0) + (emotionData.suprise || 0);
+  
+            let rating = "";
+            if (positiveSum > negativeSum) {
+              rating = "confident!";
+            } else if (positiveSum < negativeSum) {
+              rating = "not so confident!";
+            }
+            console.log(rating);
+            setEmotion(rating);
+            console.log("emotion"+emotion);
+            
+          })
+          .catch((error) => console.error("Error fetching emotion data:", error));
+  },[])
 
   useEffect(() => {
     if (!numQuestions || !isLoggedIn) {
@@ -51,30 +70,6 @@ const InterviewPage = () => {
       setQuestionList(shuffledQuestions);
     }
   }, [profileId, numQuestions]);
-
-  useEffect(() => {
-    if (cameraOn) {
-      const startCamera = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-          });
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          }
-        } catch (error) {
-          console.error("Error accessing camera:", error);
-        }
-      };
-      startCamera();
-    } else {
-      if (videoRef.current && videoRef.current.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-    }
-  }, [cameraOn]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -162,7 +157,7 @@ const InterviewPage = () => {
 
   const handleEndTest = () => {
     setPopup(true);
-    navigate("/result", { state: { questionData } });
+    navigate("/result", { state: { questionData, emotion } });
   };
 
   return (
@@ -185,28 +180,10 @@ const InterviewPage = () => {
                 <p>Transcript: {transcript}</p>
                 <p>{output && `Your score: ${output}%`}</p>
               </div>
-              <button onClick={() => setCameraOn((prev) => !prev)}>
-                {cameraOn ? "Turn Off Camera" : "Turn On Camera"}
-              </button>
               {popup ? (
                 handleEndTest()
               ) : (
                 <button onClick={handleEndTest}>End Test</button>
-              )}
-            </div>
-
-            <div className="camera-div">
-              {cameraOn && (
-                <video
-                  style={{
-                    width: "300px",
-                    height: "200px",
-                    borderRadius: "10px",
-                  }}
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                />
               )}
             </div>
           </div>

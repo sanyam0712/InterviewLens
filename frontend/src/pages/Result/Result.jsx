@@ -9,6 +9,7 @@ const Result = () => {
   const location = useLocation();
   const [scores, setScores] = useState([]);
   const questionData = location.state?.questionData || [];
+  const emotion = location.state?.emotion || "";
   const [faqs, setFaqs] = useState(questionData);
   console.log(questionData);
   
@@ -60,6 +61,7 @@ const Result = () => {
   return (
     <div className="result">
       <h1>{average.toFixed(2)}% answers are correct</h1>
+      <h1>You are looking {emotion}</h1>
       <div className="answers-result">
         <div className="answer-section">
           <h2>Answer Details</h2>
@@ -72,7 +74,7 @@ const Result = () => {
             />
           ))}
         </div>
-        <div className="answer-section">
+        {/* <div className="answer-section">
           <h2>Previous Play</h2>
           {scores.map((score, index) => (
             <div
@@ -98,7 +100,7 @@ const Result = () => {
                 ))}
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

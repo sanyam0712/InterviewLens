@@ -7,14 +7,25 @@ import "./Login.css";
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    jobProfile: "",
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Handle input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   // Handle Login Submit
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+    const { email, password } = formData;
 
     try {
       const response = await fetch(
@@ -31,7 +42,7 @@ const Login = () => {
       if (response.ok) {
         dispatch(login({ token: data.token, user: data.user }));
         alert("Login successful!");
-        navigate("/"); 
+        navigate("/");
       } else {
         setErrorMessage(data.message || "Something went wrong!");
       }
@@ -43,10 +54,7 @@ const Login = () => {
   // Handle Signup Submit
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    const jobProfile = event.target.jobProfile.value;
+    const { name, email, password, jobProfile } = formData;
 
     try {
       const response = await fetch(
@@ -82,6 +90,8 @@ const Login = () => {
             <input
               type="email"
               name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               placeholder="Enter your email"
               required
               className="auth-input"
@@ -90,6 +100,8 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              value={formData.password}
+              onChange={handleInputChange}
               placeholder="Enter your password"
               required
               className="auth-input"
@@ -104,6 +116,8 @@ const Login = () => {
             <input
               type="text"
               name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               placeholder="Enter your name"
               required
               className="auth-input"
@@ -112,6 +126,8 @@ const Login = () => {
             <input
               type="email"
               name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               placeholder="Enter your email"
               required
               className="auth-input"
@@ -120,6 +136,8 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              value={formData.password}
+              onChange={handleInputChange}
               placeholder="Enter your password"
               required
               className="auth-input"
@@ -128,6 +146,8 @@ const Login = () => {
             <input
               type="text"
               name="jobProfile"
+              value={formData.jobProfile}
+              onChange={handleInputChange}
               placeholder="Enter your job profile"
               required
               className="auth-input"
@@ -141,7 +161,11 @@ const Login = () => {
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <a
             href="#"
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setErrorMessage("");
+              setFormData({ name: "", email: "", password: "", jobProfile: "" });
+            }}
             className="auth-link"
           >
             {isLogin ? "Sign up here" : "Login here"}
