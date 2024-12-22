@@ -7,27 +7,8 @@ const AboutUs = () => {
   return (
     <div onClick={navigate("/")} className="about-us-wrapper">
       <nav className="navbar">
-              <div className="logo" onClick={navigate('/')}>InterviewLens</div>
-              <div className="nav-buttons">
-                <button onClick={() => setModalOpen(true)}>Topics</button>
-                {isLoggedIn ? (
-                  <>
-                    <button
-                      onClick={()=>dispatch(logout())}
-                    >
-                      Logout
-                    </button>
-                    <p>Hello, {user.name}</p>
-                  </>
-                ) : (
-                  <button
-                    onClick={()=>navigate("/login")}
-                  >
-                    Login
-                  </button>
-                )}
-              </div>
-            </nav>
+        <div className="logo" onClick={() => navigate("/")}>InterviewLens</div>
+      </nav>
       <h1 className="about-us-title">About Us</h1>
       <div className="about-us-container">
         <p>

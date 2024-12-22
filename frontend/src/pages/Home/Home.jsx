@@ -94,18 +94,31 @@ function Home() {
       </section>
 
       <footer className="footer">
-        <div className="footer-section">
-          <h3>About Us</h3>
-          <p>
-            Learn more about our mission and team dedicated to improving your
-            interview skills.
-          </p>
-        </div>
-        <div className="footer-section">
-          <h3>Contact</h3>
-          <p>Email: contact@interviewlens.com</p>
-        </div>
-      </footer>
+  <div className="footer-content">
+    <div className="quick-links">
+      <h4>Quick Links</h4>
+      <a onClick={() => navigate('/about-us')} className="quick-link">About Us</a>
+      <a onClick={() => navigate('/contact')} className="quick-link">Contact</a>
+    </div>
+
+    <div className="footer-section">
+      <h4>About Us</h4>
+      <p>
+        Learn more about our mission and team dedicated to improving your interview skills.
+      </p>
+    </div>
+
+    <div className="footer-section">
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:contact@interviewlens.com">contact@interviewlens.com</a></p>
+    </div>
+  </div>
+
+  <div className="footer-bottom">
+    <p>&copy; {new Date().getFullYear()} InterviewLens. All rights reserved.</p>
+  </div>
+</footer>
+
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
