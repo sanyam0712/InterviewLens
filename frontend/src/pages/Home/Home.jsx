@@ -15,7 +15,7 @@ function Home() {
   return (
     <div className="home-container">
       <nav className="navbar">
-        <div className="logo">InterviewLens</div>
+        <div className="logo" onClick={navigate('/')}>InterviewLens</div>
         <div className="nav-buttons">
           <button onClick={() => setModalOpen(true)}>Topics</button>
           {isLoggedIn ? (

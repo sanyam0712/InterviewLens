@@ -60,6 +60,28 @@ const Result = () => {
 
   return (
     <div className="result">
+      <nav className="navbar">
+              <div className="logo" onClick={navigate('/')}>InterviewLens</div>
+              <div className="nav-buttons">
+                <button onClick={() => setModalOpen(true)}>Topics</button>
+                {isLoggedIn ? (
+                  <>
+                    <button
+                      onClick={()=>dispatch(logout())}
+                    >
+                      Logout
+                    </button>
+                    <p>Hello, {user.name}</p>
+                  </>
+                ) : (
+                  <button
+                    onClick={()=>navigate("/login")}
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
+            </nav>
       <h1>{average.toFixed(2)}% answers are correct</h1>
       <h1>You are looking {emotion}</h1>
       <div className="answers-result">
