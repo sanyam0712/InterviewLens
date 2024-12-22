@@ -35,7 +35,8 @@ const InterviewPage = () => {
 
 
   useEffect(() => {  
-        fetch("http://localhost:4000/api/emotion/start-analysis")
+    setTimeout(() => {
+      fetch("http://localhost:4000/api/emotion/start-analysis")
           .then((response) => response.json())
           .then((emotionData) => {
             const positiveSum = (emotionData.happy || 0) + (emotionData.neutral || 0);
@@ -53,6 +54,8 @@ const InterviewPage = () => {
             
           })
           .catch((error) => console.error("Error fetching emotion data:", error));
+    }, 5000);
+        
   },[])
 
   useEffect(() => {

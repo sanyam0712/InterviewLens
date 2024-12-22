@@ -1,43 +1,61 @@
-import React from 'react';
-import './AboutUs.css';
+import React, { useState } from "react";
+import "./AboutUs.css";
+import { useNavigate } from "react-router-dom";
 
-function AboutUs() {
+const AboutUs = () => {
+  const navigate = useNavigate()
   return (
-    <div className="about-container">
-      <nav className="navbar">
-        <div className="logo">InterviewLens</div>
-      </nav>
-
-      <header className="about-hero">
-        <h1>About Us</h1>
-        <p>Your journey to interview success starts here.</p>
-      </header>
-
-      <section className="about-content">
-        <h2>Who We Are</h2>
+    <div onClick={navigate("/")} className="about-us-wrapper">
+      <div className="top-left-logo" >InterviewLens</div>
+      <h1 className="about-us-title">About Us</h1>
+      <div className="about-us-container">
         <p>
-          InterviewLens is an innovative platform designed to transform how job seekers prepare for interviews. Our mission is to leverage cutting-edge AI technologies to create realistic and personalized interview experiences.
+          Welcome to the InterviewLens - your ultimate destination for mastering
+          the art of interviews in today's competitive job market. Our platform
+          is designed to empower users by providing a realistic, supportive, and
+          interactive environment where they can enhance their interview skills,
+          build confidence, and achieve their career aspirations.
         </p>
-
-        <h2>Our Vision</h2>
         <p>
-          We envision a world where every candidate feels confident and prepared for any interview. Our AI-driven tools provide tailored mock interviews, real-time feedback, and performance analytics to boost your success.
+          At its core, InterviewLens simulates real-life interview scenarios
+          tailored to the user's chosen profession. By selecting a predefined
+          role, users engage in role-specific mock interviews, complete with
+          audio-driven questions and recorded vocal responses. This immersive
+          experience replicates the pressure and formality of actual interviews,
+          helping users become familiar with high-stakes environments.
         </p>
-
-        <h2>Meet Our Team</h2>
         <p>
-          Our team consists of AI experts, career coaches, and tech enthusiasts committed to helping you shine in your next job interview.
+          What sets us apart is our integration of cutting-edge AI technologies.
+          Using tools like GEMINI for evaluating responses and DeepFace for
+          analyzing emotions, we provide users with comprehensive feedback on
+          their performance. From assessing verbal accuracy to gauging emotional
+          composure, our feedback offers actionable insights that help users
+          refine their communication skills and bolster their confidence.
         </p>
-      </section>
-
-      <footer className="footer">
-        <div className="footer-section">
-          <h3>Contact Us</h3>
-          <p>Email: contact@interviewlens.com</p>
-        </div>
-      </footer>
+        <p>
+          Our platform goes beyond traditional interview preparation by
+          incorporating real-time data analysis and intuitive user interfaces.
+          We record and evaluate both verbal and non-verbal cues, providing
+          users with a holistic understanding of their strengths and areas for
+          improvement. Whether it's building poise under pressure or fine-tuning
+          technical responses, we guide users every step of the way.
+        </p>
+        <p>
+          Built with usability, scalability, and security in mind, the Mock
+          Interviewing Website caters to a diverse audience, from students
+          embarking on their professional journeys to seasoned professionals
+          seeking to refine their skills. With robust security measures and a
+          commitment to user privacy, we ensure a safe and reliable environment
+          for all.
+        </p>
+        <p>
+          Join us in transforming interview preparation into a comprehensive and
+          confidence-building experience. Let's work together to unlock your
+          full potential and pave the way for success in your career.
+        </p>
+      </div>
     </div>
   );
-}
+};
 
 export default AboutUs;

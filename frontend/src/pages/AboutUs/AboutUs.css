@@ -1,70 +1,55 @@
-.about-container {
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background: #000;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .navbar {
-    background: #111;
-    padding: 1rem 2rem;
-  }
-  
-  .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-  }
-  
-  .about-hero {
-    padding: 4rem 2rem;
-    background: #222;
-  }
-  
-  .about-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .about-hero p {
-    font-size: 1.5rem;
-    color: #ddd;
-  }
-  
-  .about-content {
-    padding: 4rem 2rem;
-    background: #111;
-    text-align: left;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .about-content h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #fff;
-  }
-  
-  .about-content p {
-    font-size: 1.2rem;
-    color: #ddd;
-    line-height: 1.8;
-  }
-  
-  .footer {
-    padding: 2rem;
-    background: #000;
-  }
-  
-  .footer-section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .footer-section p {
-    font-size: 1.2rem;
-    color: #ddd;
-  }
-  
+/* Outer wrapper styles */
+.about-us-wrapper {
+  background-color: #222; /* Background outside the container */
+  min-height: 100vh;     /* Ensure it covers the full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack title and content vertically */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative; /* Allows positioning of the top-left logo */
+}
+
+/* Top-left logo styles */
+.top-left-logo {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(145deg, #333, #111); /* Same color as the container */
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Title styles */
+.about-us-title {
+  font-size: 48px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 2px solid #444;
+  padding-bottom: 10px;
+  width: fit-content;
+}
+
+/* About us container styles */
+.about-us-container {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(145deg, #333, #111); /* Gradient background for the container */
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+.about-us-container p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
